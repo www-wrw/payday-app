@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Payday"/>
+<title>💰 Payday Flow</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #F2F2F7; color: #1C1C1E; min-height: 100vh; }
+
+  .header { background: #1F2D3D; color: white; padding: 16px 16px 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .header h1 { font-size: 20px; font-weight: 700; }
+  .header p  { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+  .nav { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .nav button { background: rgba(255,255,255,0.15); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .nav button:active { background: rgba(255,255,255,0.3); }
+  .nav-label { font-size: 17px; font-weight: 600; }
+
+  .container { padding: 12px; max-width: 500px; margin: 0 auto; }
+
+  /* Today banner */
+  .today-banner { background: #E9C46A; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .today-banner span { font-size: 13px; font-weight: 600; color: #1C1C1E; }
+
+  /* Settings cards */
+  .settings-card { background: white; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+  .settings-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; }
+  .settings-header-left { display: flex; align-items: center; gap: 8px; }
+  .settings-title { font-size: 14px; font-weight: 700; color: #1C1C1E; }
+  .settings-subtitle { font-size: 12px; color: #8E8E93; margin-top: 1px; }
+  .settings-chevron { font-size: 14px; color: #8E8E93; transition: transform 0.2s; }
+  .settings-chevron.open { transform: rotate(90deg); }
+  .settings-body { padding: 0 16px 14px; border-top: 1px solid #F2F2F7; display: none; }
+  .settings-body.open { display: block; }
+  .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F2F2F7; }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row label { font-size: 13px; color: #3A3A3C; flex: 1; }
+  .settings-row .sublabel { font-size: 11px; color: #8E8E93; margin-top: 2px; }
+  .input-wrap { display: flex; align-items: center; background: #F2F2F7; border-radius: 8px; padding: 6px 10px; }
+  .input-wrap span { font-size: 13px; color: #8E8E93; margin-right: 3px; }
+  .input-wrap input { border: none; background: transparent; font-size: 14px; font-weight: 600; color: #1C1C1E; width: 90px; text-align: right; outline: none; font-family: inherit; }
+  .btn-apply { background: #2A9D8F; color: white; border: none; border-radius: 10px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; width: 100%; }
+  .btn-apply:active { background: #1F7A6E; }
+  .cc-balance-display { font-size: 28px; font-weight: 800; color: #E76F51; text-align: center; padding: 10px 0 4px; }
+  .cc-balance-label { font-size: 12px; color: #8E8E93; text-align: center; margin-bottom: 8px; }
+  .cc-progress-wrap { background: #F2F2F7; border-radius: 100px; height: 10px; margin: 8px 0; overflow: hidden; }
+  .cc-progress-bar { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #27AE60, #2A9D8F); transition: width 0.5s ease; }
+  .cc-progress-labels { display: flex; justify-content: space-between; font-size: 11px; color: #8E8E93; }
+
+  /* Bonus income list */
+  .bonus-list { margin-top: 8px; }
+  .bonus-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #F2F2F7; font-size: 13px; }
+  .bonus-item:last-child { border-bottom: none; }
+  .bonus-remove { background: #FDECEA; border: none; color: #E76F51; border-radius: 6px; padding: 3px 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .bonus-add-row { display: flex; gap: 8px; margin-top: 8px; }
+  .bonus-add-row input { flex: 1; border: 1px solid #E5E7EB; border-radius: 8px; padding: 8px 10px; font-size: 13px; outline: none; font-family: inherit; background: #F9F9F9; }
+  .bonus-add-row input:focus { border-color: #2A9D8F; }
+  .btn-add-bonus { background: #2A9D8F; color: white; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+
+  /* Calendar */
+  .calendar { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .dow-row { display: grid; grid-template-columns: repeat(7,1fr); background: #F2F2F7; padding: 6px 4px 4px; }
+  .dow-cell { text-align: center; font-size: 11px; font-weight: 600; color: #8E8E93; }
+  .dow-cell.weekend { color: #E76F51; }
+  .days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; padding: 4px; }
+  .day { min-height: 54px; border-radius: 10px; padding: 4px 3px 3px; display: flex; flex-direction: column; cursor: default; position: relative; }
+  .day.has-event { cursor: pointer; }
+  .day.has-event:active { opacity: 0.75; transform: scale(0.96); }
+  .day.selected { box-shadow: 0 0 0 2.5px #1F2D3D, 0 2px 8px rgba(0,0,0,0.2); }
+  .day-num { font-size: 13px; font-weight: 500; color: #3A3A3C; line-height: 1; }
+  .day-num.is-today { background: #E76F51; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; }
+  .day-dot { width: 6px; height: 6px; border-radius: 50%; margin: 2px auto 0; }
+  .day-label { font-size: 8px; font-weight: 600; line-height: 1.2; margin-top: 2px; text-align: center; }
+
+  /* Event panel */
+  .panel { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); min-height: 80px; }
+  .panel-empty { padding: 24px 16px; text-align: center; color: #8E8E93; font-size: 14px; font-style: italic; }
+  .panel-header { padding: 12px 16px; color: white; font-weight: 700; font-size: 15px; }
+  .panel-note { padding: 8px 14px; font-size: 12px; font-weight: 500; font-style: italic; }
+  .panel-rows { padding: 0 0 4px; }
+  .panel-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 16px; font-size: 13px; }
+  .panel-row:nth-child(even) { background: #F9F9F9; }
+  .panel-row.urgent { background: #FDECEA; }
+  .panel-row.highlight { background: #EAFAF1; }
+  .panel-row.bonus-row { background: #FDF6E3; }
+  .row-label { flex: 1; color: #3A3A3C; }
+  .row-label.urgent { color: #E76F51; font-weight: 700; }
+  .row-label.highlight { color: #27AE60; font-weight: 700; }
+  .row-label.bonus { color: #E9C46A; font-weight: 700; }
+  .row-amount { font-weight: 700; margin-left: 12px; white-space: nowrap; font-size: 14px; }
+
+  /* Summary */
+  .summary { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .summary-title { background: #1F2D3D; color: white; font-weight: 700; font-size: 14px; padding: 10px 16px; }
+  .summary-row { display: flex; justify-content: space-between; padding: 8px 16px; font-size: 13px; border-bottom: 1px solid #F2F2F7; }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row.total { background: #2A9D8F; color: white; font-weight: 700; }
+
+  /* Legend */
+  .legend { background: white; border-radius: 16px; padding: 12px 14px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .legend-title { font-size: 12px; font-weight: 700; color: #8E8E93; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .legend-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #3A3A3C; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  .safe-bottom { height: calc(env(safe-area-inset-bottom, 0px) + 20px); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>💰 Payday Flow</h1>
+  <p>Tap any highlighted date to see your money moves</p>
+  <div class="nav">
+    <button onclick="changeMonth(-1)">‹</button>
+    <span class="nav-label" id="nav-label"></span>
+    <button onclick="changeMonth(1)">›</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Today Banner -->
+  <div class="today-banner" id="today-banner"></div>
+
+  <!-- CC Balance Card -->
+  <div class="settings-card">
+    <div class="settings-header" onclick="toggleSection('cc')">
+      <div class="settings-header-left">
+        <span>💳</span>
+        <div>
+          <div class="settings-title">Credit Card Balance</div>
+          <div class="settings-subtitle" id="cc-subtitle">Loading...</div>
+        </div>
+      </div>
+      <span class="settings-chevron" id="cc-chevron">›</span>
+    </div>
+    <div class="settings-body" id="cc-body">
+      <div class="cc-balance-display" id="cc-display"></div>
+      <div class="cc-balance-label">Current balance</div>
+      <div class="cc-progress-wrap"><div class="cc-progress-bar" id="cc-bar"></div></div>
+      <div class="cc-progress-labels"><span id="cc-paid-label"></span><span id="cc-orig-label"></span></div>
+      <div class="settings-row" style="margin-top:12px">
+        <div><div class="settings-row label">Update balance</div><div class="sublabel">Enter your current CC balance</div></div>
+        <div class="input-wrap"><span>$</span><input type="number" id="cc-input" placeholder="5095.90" inputmode="decimal"/></div>
+      </div>
+      <button class="btn-apply" onclick="updateCCBalance()">Update Balance</button>
+    </div>
+  </div>
+
+  <!-- Bonus Income Card -->
+  <div class="settings-card">
+    <div class="settings-header" onclick="toggleSection('bonus')">
+      <div class="settings-header-left">
+        <span>🎁</span>
+        <div>
+          <div class="settings-title">Bonus Income</div>
+          <div class="settings-subtitle" id="bonus-subtitle">No bonuses this month</div>
+        </div>
+      </div>
+      <span class="settings-chevron" id="bonus-chevron">›</span>
+    </div>
+    <div class="settings-body" id="bonus-body">
+      <p style="font-size:12px;color:#8E8E93;padding:8px 0 4px">Add any extra income this month (bonuses, side income, etc). Extra goes straight to the CC.</p>
+      <div class="bonus-list" id="bonus-list"></div>
+      <div class="bonus-add-row">
+        <input type="text" id="bonus-label-input" placeholder="Label (e.g. Work Bonus)"/>
+        <div class="input-wrap" style="background:white;border:1px solid #E5E7EB"><span>$</span><input type="number" id="bonus-amount-input" placeholder="0.00" inputmode="decimal" style="width:70px"/></div>
+        <button class="btn-add-bonus" onclick="addBonus()">+ Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="calendar">
+    <div class="dow-row">
+      <div class="dow-cell weekend">Sun</div>
+      <div class="dow-cell">Mon</div>
+      <div class="dow-cell">Tue</div>
+      <div class="dow-cell">Wed</div>
+      <div class="dow-cell">Thu</div>
+      <div class="dow-cell">Fri</div>
+      <div class="dow-cell weekend">Sat</div>
+    </div>
+    <div class="days-grid" id="days-grid"></div>
+  </div>
+
+  <div class="panel" id="event-panel">
+    <div class="panel-empty">Tap any highlighted date to see your money moves</div>
+  </div>
+
+  <div class="summary" id="month-summary"></div>
+
+  <div class="legend">
+    <div class="legend-title">Legend</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="legend-dot" style="background:#1F2D3D"></div> Payday</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6C5CE7"></div> Last Payday (pre-funds rent)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#27AE60"></div> Rent pre-funded bonus</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#2A9D8F"></div> Weekly transfer</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#E76F51"></div> Rent due</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#E9C46A"></div> Today</div>
+    </div>
+  </div>
+
+  <div class="safe-bottom"></div>
+</div>
+
+<script>
+// ── Constants ─────────────────────────────────────────────────
+const RENT           = 750;
+const SUBS           = 148.79;
+const CC_MIN         = 125;
+const VARIABLE       = 302.50;
+const CC_EXTRA_FULL  = 530.60;
+const CC_EXTRA_P1    = 155.60;
+const BONUS_CC       = 375.01;
+const WEEKLY         = 151.25;
+const MONTHLY_INCOME = 1345;
+const CC_ORIGINAL    = 5742.68;
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+// ── State (persisted in localStorage) ─────────────────────────
+let state = {
+  ccBalance: 5095.90,
+  bonuses: {},  // { "2026-3": [{ label, amount }] }
+};
+
+function saveState() {
+  try { localStorage.setItem('payday_state', JSON.stringify(state)); } catch(e) {}
+}
+function loadState() {
+  try {
+    const s = localStorage.getItem('payday_state');
+    if (s) state = { ...state, ...JSON.parse(s) };
+  } catch(e) {}
+}
+
+loadState();
+
+let currentYear  = new Date().getFullYear();
+let currentMonth = new Date().getMonth();
+let selectedKey  = null;
+const today      = new Date();
+const todayKey   = dateKey(today);
+
+// ── Helpers ───────────────────────────────────────────────────
+function dateKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+
+// Biweekly anchor: Feb 28, 2026
+const ANCHOR = new Date(2026, 1, 28);
+
+function getAllPaydays() {
+  const paydays = [];
+  for (let i = 0; i < 78; i++) { // 3 years
+    const d = new Date(ANCHOR);
+    d.setDate(ANCHOR.getDate() + i * 14);
+    paydays.push(d);
+  }
+  return paydays;
+}
+
+const ALL_PAYDAYS = getAllPaydays();
+
+function getPaydaysForMonth(year, month) {
+  return ALL_PAYDAYS.filter(d => d.getFullYear() === year && d.getMonth() === month);
+}
+
+function isLastPaydayOfMonth(dep) {
+  const deps = getPaydaysForMonth(dep.getFullYear(), dep.getMonth());
+  const sorted = deps.slice().sort((a,b) => b-a);
+  return sorted.length > 0 && dateKey(dep) === dateKey(sorted[0]);
+}
+
+function isFirstPaydayOfMonth(dep) {
+  const deps = getPaydaysForMonth(dep.getFullYear(), dep.getMonth());
+  const sorted = deps.slice().sort((a,b) => a-b);
+  return sorted.length > 0 && dateKey(dep) === dateKey(sorted[0]);
+}
+
+function rentPreFunded(year, month) {
+  const pm = month === 0 ? 11 : month - 1;
+  const py = month === 0 ? year - 1 : year;
+  const prevDeps = getPaydaysForMonth(py, pm);
+  return prevDeps.length > 0;
+}
+
+function monthBonusKey(year, month) { return `${year}-${month}`; }
+
+function getMonthBonuses(year, month) {
+  return state.bonuses[monthBonusKey(year, month)] || [];
+}
+
+function getMonthBonusTotal(year, month) {
+  return getMonthBonuses(year, month).reduce((s, b) => s + parseFloat(b.amount), 0);
+}
+
+// ── Settings toggles ──────────────────────────────────────────
+function toggleSection(id) {
+  const body = document.getElementById(`${id}-body`);
+  const chevron = document.getElementById(`${id}-chevron`);
+  const open = body.classList.toggle('open');
+  chevron.classList.toggle('open', open);
+}
+
+function updateCCBalance() {
+  const val = parseFloat(document.getElementById('cc-input').value);
+  if (isNaN(val) || val < 0) { alert('Please enter a valid balance.'); return; }
+  state.ccBalance = val;
+  saveState();
+  document.getElementById('cc-input').value = '';
+  renderAll();
+  // Close panel
+  document.getElementById('cc-body').classList.remove('open');
+  document.getElementById('cc-chevron').classList.remove('open');
+}
+
+function addBonus() {
+  const label  = document.getElementById('bonus-label-input').value.trim() || 'Bonus';
+  const amount = parseFloat(document.getElementById('bonus-amount-input').value);
+  if (isNaN(amount) || amount <= 0) { alert('Please enter a valid amount.'); return; }
+  const key = monthBonusKey(currentYear, currentMonth);
+  if (!state.bonuses[key]) state.bonuses[key] = [];
+  state.bonuses[key].push({ label, amount });
+  saveState();
+  document.getElementById('bonus-label-input').value = '';
+  document.getElementById('bonus-amount-input').value = '';
+  renderAll();
+}
+
+function removeBonus(key, idx) {
+  state.bonuses[key].splice(idx, 1);
+  saveState();
+  renderAll();
+}
+
+// ── CC card render ─────────────────────────────────────────────
+function renderCCCard() {
+  const bal  = state.ccBalance;
+  const paid = CC_ORIGINAL - bal;
+  const pct  = Math.min(100, Math.max(0, (paid / CC_ORIGINAL) * 100));
+  document.getElementById('cc-display').textContent  = `$${bal.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('cc-subtitle').textContent = `$${paid.toFixed(2)} paid off (${pct.toFixed(0)}%)`;
+  document.getElementById('cc-bar').style.width      = `${pct}%`;
+  document.getElementById('cc-paid-label').textContent = `$${paid.toFixed(0)} paid`;
+  document.getElementById('cc-orig-label').textContent = `$${CC_ORIGINAL.toLocaleString()} original`;
+}
+
+// ── Bonus card render ──────────────────────────────────────────
+function renderBonusCard() {
+  const key     = monthBonusKey(currentYear, currentMonth);
+  const bonuses = getMonthBonuses(currentYear, currentMonth);
+  const total   = getMonthBonusTotal(currentYear, currentMonth);
+  const sub     = document.getElementById('bonus-subtitle');
+  sub.textContent = bonuses.length ? `+$${total.toFixed(2)} extra this month` : 'No bonuses this month';
+
+  const list = document.getElementById('bonus-list');
+  if (!bonuses.length) { list.innerHTML = ''; return; }
+  list.innerHTML = bonuses.map((b, i) =>
+    `<div class="bonus-item">
+      <span>${b.label}</span>
+      <span style="display:flex;align-items:center;gap:8px">
+        <strong style="color:#27AE60">+$${parseFloat(b.amount).toFixed(2)}</strong>
+        <button class="bonus-remove" onclick="removeBonus('${key}',${i})">✕</button>
+      </span>
+    </div>`
+  ).join('');
+}
+
+// ── Today banner ──────────────────────────────────────────────
+function renderTodayBanner() {
+  const banner = document.getElementById('today-banner');
+  const opts = { weekday:'long', month:'long', day:'numeric', year:'numeric' };
+  const dateStr = today.toLocaleDateString('en-US', opts);
+
+  // Find next payday from ALL_PAYDAYS
+  const nextPayday = ALL_PAYDAYS.find(d => d > today);
+
+  const daysUntil = nextPayday ? Math.ceil((nextPayday - today) / (1000*60*60*24)) : null;
+  const nextStr   = daysUntil !== null
+    ? (daysUntil === 1 ? '🎉 Payday tomorrow!' : `💰 Next payday in ${daysUntil} days`)
+    : '';
+
+  banner.innerHTML = `<span style="font-size:18px">📅</span><div><div style="font-size:13px;font-weight:700">${dateStr}</div>${nextStr ? `<div style="font-size:12px;color:#5D4037;margin-top:1px">${nextStr}</div>` : ''}</div>`;
+}
+
+// ── Calendar events ───────────────────────────────────────────
+function getMonthEvents(year, month) {
+  const events = {};
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const bonusTotal  = getMonthBonusTotal(year, month);
+  const bonuses     = getMonthBonuses(year, month);
+
+  // Rent on 1st
+  const rentKey = `${year}-${String(month+1).padStart(2,'0')}-01`;
+  events[rentKey] = { type:'rent', label:'🏠 Rent Due', color:'#E76F51', details:[], note:`$${RENT.toFixed(2)} due today` };
+
+  // Weekly transfers (Saturdays only, no conflict with payday)
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    if (date.getDay() === 6) {
+      const k = dateKey(date);
+      if (!events[k]) {
+        events[k] = { type:'weekly', label:'📲 Weekly', color:'#2A9D8F',
+          details:[{ action:'Weekly Needs → Daily Wallet', amount:`$${WEEKLY.toFixed(2)}` }] };
+      }
+    }
+  }
+
+  const rentFunded = rentPreFunded(year, month);
+  const deposits = getPaydaysForMonth(year, month).sort((a,b)=>a-b);
+
+  deposits.forEach((dep, idx) => {
+    const k       = dateKey(dep);
+    const isLast  = isLastPaydayOfMonth(dep);
+    const isFirst = isFirstPaydayOfMonth(dep);
+    const paydayNum = idx + 1;
+
+    // Bonus row to append
+    const bonusRows = bonuses.length ? bonuses.map(b => ({
+      action: `🎁 ${b.label} → Credit Card`,
+      amount: `+$${parseFloat(b.amount).toFixed(2)}`,
+      bonus: true
+    })) : [];
+
+    if (isLast) {
+      const p1fixed = RENT + (SUBS/2) + (CC_MIN/2);
+      const ccPayment = MONTHLY_INCOME - p1fixed - VARIABLE;
+      events[k] = {
+        type:'payday_last', label:`💰 Payday #${paydayNum} 🌟`, color:'#6C5CE7',
+        note:"Last payday of month — pre-fund next month's rent immediately!",
+        details: [
+          { action:'Fixed Expenses (next rent + ½ subs + ½ CC min)', amount:`$${p1fixed.toFixed(2)}` },
+          { action:'Weekly Needs', amount:`$${VARIABLE.toFixed(2)}` },
+          { action:'Credit Card (extra)', amount:`$${ccPayment.toFixed(2)}` },
+          { action:'Checking Inbox remaining', amount:'$0.00' },
+          { action:"⚠️ PAY NEXT MONTH'S RENT NOW", amount:`$${RENT.toFixed(2)}`, urgent:true },
+          ...bonusRows,
+        ]
+      };
+    } else if (isFirst && rentFunded) {
+      const fixedNoRent = (SUBS/2) + (CC_MIN/2);
+      const ccBonus = MONTHLY_INCOME - fixedNoRent - VARIABLE;
+      events[k] = {
+        type:'payday_bonus', label:`💰 Payday #${paydayNum} 🟢`, color:'#27AE60',
+        note:`Rent pre-funded last month — extra $${RENT} goes to CC!`,
+        details: [
+          { action:'Fixed Expenses (½ subs + ½ CC min — NO RENT!)', amount:`$${fixedNoRent.toFixed(2)}` },
+          { action:'Weekly Needs', amount:`$${VARIABLE.toFixed(2)}` },
+          { action:`Credit Card (extra + freed $${RENT} rent)`, amount:`$${ccBonus.toFixed(2)}`, highlight:true },
+          { action:'Checking Inbox remaining', amount:'$0.00' },
+          ...bonusRows,
+        ]
+      };
+    } else if (isFirst) {
+      const p1fixed = RENT + (SUBS/2) + (CC_MIN/2);
+      const ccPayment = MONTHLY_INCOME - p1fixed - VARIABLE;
+      events[k] = {
+        type:'payday', label:`💰 Payday #${paydayNum}`, color:'#1F2D3D',
+        note:'Pay rent immediately after transferring to Fixed Expenses.',
+        details: [
+          { action:'Fixed Expenses (rent + ½ subs + ½ CC min)', amount:`$${p1fixed.toFixed(2)}` },
+          { action:'Weekly Needs', amount:`$${VARIABLE.toFixed(2)}` },
+          { action:'Credit Card (extra)', amount:`$${ccPayment.toFixed(2)}` },
+          { action:'Checking Inbox remaining', amount:'$0.00' },
+          { action:'⚠️ Pay rent from Fixed Expenses', amount:`$${RENT.toFixed(2)}`, urgent:true },
+          ...bonusRows,
+        ]
+      };
+    } else {
+      const p2fixed   = (SUBS/2) + (CC_MIN/2);
+      const leftover  = MONTHLY_INCOME - p2fixed - VARIABLE - CC_EXTRA_FULL;
+      events[k] = {
+        type:'payday', label:`💰 Payday #${paydayNum}`, color:'#1F2D3D',
+        details: [
+          { action:'Fixed Expenses (½ subs + ½ CC min)', amount:`$${p2fixed.toFixed(2)}` },
+          { action:'Weekly Needs', amount:`$${VARIABLE.toFixed(2)}` },
+          { action:'Credit Card (extra)', amount:`$${CC_EXTRA_FULL.toFixed(2)}` },
+          { action:'🎉 Bonus CC Payment', amount:`$${leftover.toFixed(2)}`, highlight:true },
+          { action:'Checking Inbox remaining', amount:'$0.00' },
+          ...bonusRows,
+        ]
+      };
+    }
+  });
+
+  return events;
+}
+
+// ── Calendar render ───────────────────────────────────────────
+function renderCalendar() {
+  document.getElementById('nav-label').textContent = `${MONTHS[currentMonth]} ${currentYear}`;
+  const events = getMonthEvents(currentYear, currentMonth);
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDow    = new Date(currentYear, currentMonth, 1).getDay();
+  const grid        = document.getElementById('days-grid');
+  grid.innerHTML    = '';
+
+  for (let i = 0; i < firstDow; i++) {
+    const e = document.createElement('div');
+    e.className = 'day'; e.style.background = 'transparent'; e.style.border = 'none';
+    grid.appendChild(e);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(currentYear, currentMonth, d);
+    const k    = dateKey(date);
+    const ev   = events[k];
+    const isToday = k === todayKey;
+    const isSel   = k === selectedKey;
+    const isSun   = date.getDay() === 0;
+    const isSat   = date.getDay() === 6;
+
+    const cell = document.createElement('div');
+    cell.className = 'day' + (ev ? ' has-event' : '') + (isSel ? ' selected' : '');
+    cell.style.border = ev ? `2px solid ${ev.color}` : '1px solid #E5E7EB';
+    cell.style.background = isToday ? '#FFF8E8' : ev ? ev.color + '18' : '#FAFAFA';
+
+    // Day number
+    const numEl = document.createElement('div');
+    if (isToday) {
+      numEl.className = 'day-num is-today';
+    } else {
+      numEl.className = 'day-num';
+      if (isSun || isSat) numEl.style.color = '#E76F51';
+    }
+    numEl.textContent = d;
+    cell.appendChild(numEl);
+
+    if (ev) {
+      const dot = document.createElement('div');
+      dot.className = 'day-dot';
+      dot.style.background = ev.color;
+      cell.appendChild(dot);
+      const lbl = document.createElement('div');
+      lbl.className = 'day-label';
+      lbl.style.color = ev.color;
+      lbl.textContent = ev.label;
+      cell.appendChild(lbl);
+      cell.addEventListener('click', () => {
+        selectedKey = isSel ? null : k;
+        renderCalendar();
+        renderPanel(events);
+      });
+    }
+    grid.appendChild(cell);
+  }
+
+  renderPanel(events);
+  renderSummary();
+}
+
+// ── Panel render ──────────────────────────────────────────────
+function renderPanel(events) {
+  const panel = document.getElementById('event-panel');
+  if (!selectedKey || !events[selectedKey]) {
+    panel.innerHTML = '<div class="panel-empty">Tap any highlighted date to see your money moves</div>';
+    return;
+  }
+  const ev = events[selectedKey];
+  const [, m, d] = selectedKey.split('-');
+  const monthName = MONTHS[parseInt(m)-1];
+
+  let html = `<div class="panel-header" style="background:${ev.color}">${ev.label} — ${monthName} ${parseInt(d)}</div>`;
+  if (ev.note) html += `<div class="panel-note" style="background:${ev.color}15;color:${ev.color}">💡 ${ev.note}</div>`;
+  if (ev.details?.length) {
+    html += '<div class="panel-rows">';
+    ev.details.forEach(row => {
+      const cls    = row.urgent ? 'urgent' : row.highlight ? 'highlight' : row.bonus ? 'bonus-row' : '';
+      const lblCls = row.urgent ? 'urgent' : row.highlight ? 'highlight' : row.bonus ? 'bonus' : '';
+      const amtColor = row.urgent ? '#E76F51' : row.highlight ? '#27AE60' : row.bonus ? '#E9C46A' : ev.color;
+      html += `<div class="panel-row ${cls}"><span class="row-label ${lblCls}">${row.action}</span>${row.amount ? `<span class="row-amount" style="color:${amtColor}">${row.amount}</span>` : ''}</div>`;
+    });
+    html += '</div>';
+  }
+  panel.innerHTML = html;
+}
+
+// ── Summary render ────────────────────────────────────────────
+function renderSummary() {
+  const summary = document.getElementById('month-summary');
+  const year    = currentYear;
+  const month   = currentMonth;
+  const rentFunded = rentPreFunded(year, month);
+  const bonusTotal = getMonthBonusTotal(year, month);
+  const deps = getPaydaysForMonth(year, month).sort((a,b)=>a-b);
+  if (!deps.length) { summary.innerHTML = ''; return; }
+
+  let totalCC = 0;
+  let balance = state.ccBalance;
+  let html    = `<div class="summary-title">💳 CC Payoff — ${MONTHS[month]} ${year}</div>`;
+
+  deps.forEach((dep, idx) => {
+    const isLast  = isLastPaydayOfMonth(dep);
+    const isFirst = isFirstPaydayOfMonth(dep);
+    let payment   = 0;
+
+    if (isLast) {
+      const p1fixed = RENT + (SUBS/2) + (CC_MIN/2);
+      payment = MONTHLY_INCOME - p1fixed - VARIABLE;
+    } else if (isFirst && rentFunded) {
+      payment = MONTHLY_INCOME - (SUBS/2) - (CC_MIN/2) - VARIABLE;
+    } else if (isFirst) {
+      const p1fixed = RENT + (SUBS/2) + (CC_MIN/2);
+      payment = MONTHLY_INCOME - p1fixed - VARIABLE;
+    } else {
+      payment = CC_EXTRA_FULL + BONUS_CC;
+    }
+
+    totalCC  += payment;
+    balance   = Math.max(0, balance - payment);
+    const dateStr = dep.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    html += `<div class="summary-row"><span>${dateStr} — Payday #${idx+1}</span><span style="color:#E76F51;font-weight:600">−$${payment.toFixed(2)}</span></div>`;
+    html += `<div class="summary-row"><span style="color:#8E8E93;font-size:12px">Balance after</span><span style="font-weight:600">$${balance.toFixed(2)}</span></div>`;
+  });
+
+  if (bonusTotal > 0) {
+    totalCC  += bonusTotal;
+    balance   = Math.max(0, balance - bonusTotal);
+    html += `<div class="summary-row" style="background:#FDF6E3"><span>🎁 Bonus income → CC</span><span style="color:#E9C46A;font-weight:600">−$${bonusTotal.toFixed(2)}</span></div>`;
+    html += `<div class="summary-row" style="background:#FDF6E3"><span style="color:#8E8E93;font-size:12px">Balance after bonus</span><span style="font-weight:700">$${balance.toFixed(2)}</span></div>`;
+  }
+
+  const doneMsg = balance <= 0 ? '🎉 PAID OFF!' : `~$${balance.toFixed(2)} remaining`;
+  html += `<div class="summary-row total"><span>End of ${MONTHS[month]}</span><span>${doneMsg}</span></div>`;
+  summary.innerHTML = html;
+}
+
+// ── Master render ─────────────────────────────────────────────
+function renderAll() {
+  renderTodayBanner();
+  renderCCCard();
+  renderBonusCard();
+  renderCalendar();
+}
+
+function changeMonth(delta) {
+  selectedKey   = null;
+  currentMonth += delta;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+  renderAll();
+}
+
+renderAll();
+</script>
+</body>
+</html>
