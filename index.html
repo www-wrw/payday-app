@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="Payday"/>
-<title>Payday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>💰 Payday</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -46,10 +48,10 @@
     --shadow:    rgba(0,0,0,0.4);
     --card-shadow: 0 1px 6px rgba(0,0,0,0.35);
   }
-  :root.font-monoline {
-    --font: "SF Pro Rounded", ui-rounded, "Varela Round", "Nunito", sans-serif;
-    --radius: 20px;
-    --radius-sm: 12px;
+  :root.font-monospace {
+    --font: "JetBrains Mono", "Courier New", monospace;
+    --radius: 10px;
+    --radius-sm: 6px;
   }
   :root.font-traditional {
     --font: Georgia, "Times New Roman", "Palatino Linotype", serif;
@@ -57,8 +59,8 @@
     --radius-sm: 6px;
   }
   :root.font-clean {
-    --font: "Inter", "Helvetica Neue", Arial, sans-serif;
-    --radius: 12px;
+    --font: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+    --radius: 14px;
     --radius-sm: 8px;
   }
   body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; transition: background 0.25s, color 0.25s; }
@@ -193,8 +195,7 @@
   .day.selected { box-shadow:0 0 0 2.5px #1F2D3D; }
   .day-num { font-size:13px;font-weight:500;color:var(--text2);line-height:1; }
   .day-num.today-num { background:#E76F51;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px; }
-  .day-dot { width:6px;height:6px;border-radius:50%;margin:2px auto 0; }
-  .day-lbl { font-size:8px;font-weight:600;line-height:1.2;margin-top:2px;text-align:center; }
+  .day-lbl { font-size:8px;font-weight:700;line-height:1.2;margin-top:3px;text-align:center; }
   .day-goal-dots { display:flex;gap:2px;justify-content:center;margin-top:2px;flex-wrap:wrap; }
   .goal-pip { width:5px;height:5px;border-radius:50%; }
   /* Goal timeline bars */
@@ -251,6 +252,34 @@
   .s-item:last-child { border-bottom:none; }
   .s-item-lbl { font-size:14px;color:var(--text); }
   .s-item-sub { font-size:12px;color:var(--muted);margin-top:1px; }
+  /* Dark mode overrides for dynamically rendered content */
+  .dark .income-card { background:var(--bg2); }
+  .dark .ob-field label { color:var(--muted); }
+  .dark .vcat-add-input { background:var(--bg2);color:var(--text);border-color:var(--border); }
+  .dark .sched-chip { background:var(--bg2);color:var(--text2);border-color:var(--border); }
+  .dark .sched-chip.selected { background:#1a3a2a;color:#27AE60;border-color:#27AE60; }
+  .dark .goal-card { background:var(--bg2); }
+  .dark .goal-name { color:var(--text); }
+  .dark .goal-meta { color:var(--muted); }
+  .dark .goal-del { background:#3a1a1a;color:#ff6b6b;border-color:#5a2a2a; }
+  .dark .goal-edit-btn { background:#1a1a3a;color:#a0a0ff;border-color:#3a3a6a; }
+  .dark .p-rows { background:var(--bg2); }
+  .dark .p-row { border-bottom-color:var(--border); }
+  .dark .p-hdr { opacity:1; }
+  .dark .p-note { opacity:0.9; }
+  .dark .panel-empty { color:var(--muted); }
+  .dark .modal-wrap { background:var(--bg2); }
+  .dark .modal-input { background:var(--bg3);color:var(--text);border-color:var(--border); }
+  .dark .card-hdr { background:var(--bg2); }
+  .dark .card-body { background:var(--bg2); }
+  .dark .s-list { background:var(--bg2); }
+  .dark .s-item { border-bottom-color:var(--border); }
+  .dark .tab-bar { background:var(--bg2);border-top-color:var(--border); }
+  .dark .sum-title { color:var(--text); }
+  .dark .sum-row { border-bottom-color:var(--border);color:var(--text); }
+  .dark .bonus-wrap { background:var(--bg2); }
+  .dark .prog-wrap { background:var(--bg3); }
+  .dark .sec-title { color:var(--muted); }
   .s-val { font-size:14px;font-weight:600;color:#2A9D8F; }
   .edit-btn { background:var(--bg);border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer; }
   .edit-btn:active { background:#E5E5EA; }
@@ -334,6 +363,8 @@
   .sched-chips { display:flex;gap:6px;flex-wrap:wrap;margin-top:6px; }
   .sched-chip { padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);transition:all 0.15s; }
   .sched-chip.selected { border-color:#27AE60;background:#EAF7F0;color:#27AE60; }
+  .debt-row { background:#FFF5F0; }
+  .dark .debt-row { background:#2a1a10; }
   /* Variable category editor */
   .vcat-list { display:flex;flex-direction:column;gap:6px;margin:8px 0; }
   .vcat-row { display:flex;align-items:center;gap:8px;background:var(--bg3);border-radius:var(--radius-sm);padding:8px 10px; }
@@ -450,7 +481,61 @@
       </div>
     </div>
 
-    <!-- Step 4: PIN -->
+    <!-- Step 4: Spending Style -->
+    <div class="onboard-step" id="ob-step-4">
+      <div class="onboard-step-title">💸 How do you prefer to spend?</div>
+      <div class="onboard-step-sub">This shapes how your payday checklist is laid out. You can always change it later in Budget settings.</div>
+
+      <div style="display:flex;flex-direction:column;gap:10px" id="ob-style-options">
+        <div onclick="obSelectStyle('envelope')" id="obs-envelope" style="display:flex;align-items:flex-start;gap:12px;padding:14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:24px;flex-shrink:0">📲</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700;color:var(--text)">Weekly envelope transfer</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">Move a set amount to your spending account every week. Great for multi-account setups.</div>
+          </div>
+          <div id="obs-envelope-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px"></div>
+        </div>
+        <div onclick="obSelectStyle('lumpsum')" id="obs-lumpsum" style="display:flex;align-items:flex-start;gap:12px;padding:14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:24px;flex-shrink:0">💰</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700;color:var(--text)">Lump sum each payday</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">Move your full variable budget to spending on payday. One transfer, done.</div>
+          </div>
+          <div id="obs-lumpsum-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px"></div>
+        </div>
+        <div onclick="obSelectStyle('manual')" id="obs-manual" style="display:flex;align-items:flex-start;gap:12px;padding:14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:24px;flex-shrink:0">✏️</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700;color:var(--text)">Manual / one account</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">Everything stays in one account. Your variable budget is a spending guide, not a transfer.</div>
+          </div>
+          <div id="obs-manual-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding:14px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">🧾 Subscription handling</div>
+        <div onclick="obToggleSubsItemized()" id="obs-subs-row" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:var(--text)">Show each subscription individually</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Each sub gets its own checklist row on payday instead of a bundled total</div>
+          </div>
+          <div id="obs-subs-toggle" style="width:44px;height:26px;border-radius:13px;background:#ccc;position:relative;transition:background 0.2s;flex-shrink:0">
+            <div id="obs-subs-knob" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:white;transition:left 0.2s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5: Account Names -->
+    <div class="onboard-step" id="ob-step-5">
+      <div class="onboard-step-title">What are your accounts called?</div>
+      <div class="onboard-step-sub">Optional — skip if you prefer the defaults. This personalizes your payday checklist.</div>
+      <div style="display:flex;flex-direction:column;gap:12px" id="ob-account-fields"></div>
+      <button onclick="obStep++;obRender();window.scrollTo(0,0);" style="margin-top:16px;width:100%;background:transparent;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer">Skip — use defaults</button>
+    </div>
+
+    <!-- Step 6: PIN -->
     <div class="onboard-step" id="ob-step-4">
       <div class="onboard-step-title">🔐 Create Your PIN</div>
       <div class="onboard-step-sub">Choose a 4-digit PIN to protect your budget. You'll enter this every time you open the app.</div>
@@ -566,7 +651,11 @@
     </div>
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeGoalModal()">Cancel</button>
-      <button class="modal-save" id="goal-modal-save" style="background:#6C5CE7" onclick="saveGoal()">Add Goal</button>
+      <div id="goal-fund-warning" style="display:none;background:#FFF3CD;border:1px solid #F0A500;border-radius:10px;padding:12px;font-size:13px;color:#7A4F00;margin-bottom:12px;line-height:1.5"></div>
+      <div style="display:flex;gap:8px">
+        <button class="modal-save" id="goal-modal-save" style="background:#6C5CE7;flex:1" onclick="saveGoal()">Add Goal</button>
+        <button id="goal-warn-override" style="display:none;background:#E76F51;color:white;border:none;border-radius:12px;padding:14px 18px;font-size:15px;font-weight:700;cursor:pointer" onclick="saveGoalForce()">Save Anyway</button>
+      </div>
     </div>
   </div>
 </div>
@@ -617,12 +706,12 @@
       <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Text Style</div>
       <div style="display:flex;flex-direction:column;gap:8px" id="font-options">
         <div id="font-clean" onclick="setFont('clean')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
-          <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text);font-family:'Inter','Helvetica Neue',Arial,sans-serif">Clean</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Modern & minimal — Inter / Helvetica</div></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text);font-family:'Montserrat',sans-serif">Clean</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Geometric & bold — Montserrat</div></div>
           <div id="font-clean-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);background:transparent;flex-shrink:0"></div>
         </div>
-        <div id="font-monoline" onclick="setFont('monoline')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+        <div id="font-monospace" onclick="setFont('monospace')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
           <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text);font-family:'Nunito',ui-rounded,sans-serif">Monoline</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Soft & rounded — friendly feel</div></div>
-          <div id="font-monoline-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);background:transparent;flex-shrink:0"></div>
+          <div id="font-monospace-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);background:transparent;flex-shrink:0"></div>
         </div>
         <div id="font-traditional" onclick="setFont('traditional')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
           <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text);font-family:Georgia,serif">Traditional</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Classic serif — editorial feel</div></div>
@@ -799,6 +888,87 @@
       <div style="display:flex;align-items:center;gap:8px"><span class="s-val" id="sv-ccbal"></span><button class="edit-btn" onclick="openModal('ccbal','Current CC Balance','Your current credit card balance')">Edit</button></div>
     </div>
   </div>
+
+  <!-- Other Debts -->
+  <div class="sec-title">🏦 Other Debts</div>
+  <div class="s-list" style="margin-bottom:4px">
+    <div class="card-hdr" onclick="toggleCard('debts-mgr')">
+      <div class="card-hdr-left"><span>💸</span><div><div class="s-item-lbl">Loans & Other Debts</div><div class="s-item-sub" id="debts-mgr-sub">Car loans, student loans, personal loans…</div></div></div>
+      <span class="card-chev" id="debts-mgr-chev">›</span>
+    </div>
+    <div class="card-body" id="debts-mgr-body"><div id="debts-mgr-content"></div></div>
+  </div>
+
+  <!-- Account Names -->
+  <div class="sec-title">🏦 Your Accounts</div>
+  <div class="s-list" style="margin-bottom:4px">
+    <div style="padding:14px 16px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Name your accounts so your checklist feels familiar. Leave blank to use defaults.</div>
+      <div style="display:flex;flex-direction:column;gap:10px" id="account-names-form"></div>
+    </div>
+  </div>
+
+  <!-- Spending Style -->
+  <div class="sec-title">💸 Spending Style</div>
+  <div class="s-list" style="margin-bottom:4px">
+    <div style="padding:14px 16px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">How do you prefer to move your variable spending money?</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div onclick="setSpendingStyle('envelope')" id="ss-envelope" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:20px">📲</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Weekly envelope transfer</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Move a set amount to your spending account weekly</div></div>
+          <div id="ss-envelope-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0"></div>
+        </div>
+        <div onclick="setSpendingStyle('lumpsum')" id="ss-lumpsum" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:20px">💰</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Lump sum each payday</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Transfer your full variable budget on payday</div></div>
+          <div id="ss-lumpsum-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0"></div>
+        </div>
+        <div onclick="setSpendingStyle('manual')" id="ss-manual" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:20px">✏️</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Manual / one account</div><div style="font-size:11px;color:var(--muted);margin-top:1px">No transfer — budget is a spending guide only</div></div>
+          <div id="ss-manual-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0"></div>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div onclick="toggleSubsItemized()" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">🧾 Itemize subscriptions on payday</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Each subscription gets its own checklist row</div>
+          </div>
+          <div id="ss-subs-toggle" style="width:44px;height:26px;border-radius:13px;background:#ccc;position:relative;transition:background 0.2s;flex-shrink:0">
+            <div id="ss-subs-knob" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:white;transition:left 0.2s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Budget Mode -->
+  <div class="sec-title">🎯 Budget Focus</div>
+  <div class="s-list" style="margin-bottom:4px">
+    <div style="padding:14px 16px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">What should your leftover money go toward?</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="budget-mode-options">
+        <div onclick="setBudgetMode('debt')" id="bm-debt" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:22px">💳</div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text)">Debt Payoff</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Extra money attacks your debt balance</div></div>
+          <div id="bm-debt-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0"></div>
+        </div>
+        <div onclick="setBudgetMode('save')" id="bm-save" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:22px">🏦</div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text)">Save & Invest</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Extra money grows your savings/HYSA</div></div>
+          <div id="bm-save-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0"></div>
+        </div>
+        <div onclick="setBudgetMode('balanced')" id="bm-balanced" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--bg3)">
+          <div style="font-size:22px">⚖️</div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text)">Balanced</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Split extra money between debt & savings</div></div>
+          <div id="bm-balanced-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="sec-title">📊 Monthly Summary</div>
   <div class="s-list" id="budget-summary-list"></div>
   <div class="safe-bottom"></div>
@@ -832,6 +1002,17 @@ let selectedGoalColor = GOAL_COLORS[0];
 
 const DEFAULTS = {
   income:1345, rent:750, subs:148.79, ccmin:125,
+  budgetMode:'debt', // 'debt' | 'save' | 'balanced'
+  debts:[],          // [{id, emoji, name, balance, minPayment, rate, type}]
+  spendingStyle:'envelope', // 'envelope'|'lumpsum'|'manual'
+  subsItemized:false,       // show each subscription as its own checklist row
+  accountNames:{            // user-customizable account labels
+    inbox:  'Checking Inbox',
+    fixed:  'Fixed Expenses',
+    weekly: 'Weekly Needs',
+    spending:'Daily Wallet',
+    savings: 'Savings'
+  },
   variable:302.50, weekly:151.25, ccorig:5742.68, ccbal:5095.90,
   bonuses:{}, goals:[], checks:{}, deposits:[],
   extraIncomes:[],
@@ -877,7 +1058,7 @@ function applyAppearance(){
   if(theme==='dark') root.classList.add('dark');
   else if(theme==='auto') { if(window.matchMedia('(prefers-color-scheme: dark)').matches) root.classList.add('dark'); }
   // Font
-  root.classList.remove('font-clean','font-monoline','font-traditional');
+  root.classList.remove('font-clean','font-monospace','font-traditional');
   const font = S.appFont || 'clean';
   root.classList.add('font-'+font);
   // Accent
@@ -893,6 +1074,11 @@ function applyAppearance(){
 if(!S.subsCats) { S.subsCats = DEFAULTS.subsCats; syncSubs(); save(); }
 if(!S.fixedCats) { S.fixedCats = []; save(); }
 if(!S.extraIncomes) { S.extraIncomes = []; save(); }
+if(!S.debts) { S.debts = []; save(); }
+if(!S.budgetMode) { S.budgetMode = 'debt'; save(); }
+if(!S.spendingStyle) { S.spendingStyle = 'envelope'; save(); }
+if(S.subsItemized===undefined) { S.subsItemized = false; save(); }
+if(!S.accountNames) { S.accountNames = {...DEFAULTS.accountNames}; save(); }
 applyAppearance();
 
 let curYear=new Date().getFullYear(), curMonth=new Date().getMonth();
@@ -964,13 +1150,15 @@ function goalsForPayday(pdDate) {
 }
 
 // ── Onboarding ─────────────────────────────────────────────────
-const OB_STEPS = 5;
+const OB_STEPS = 7;
 const OB_HEROES = [
   {icon:'💰', title:'Welcome to Payday', sub:'Your personal payday budget tracker'},
-  {icon:'💵', title:'Income & Fixed Bills',    sub:'Step 1 of 4 — the non-negotiables'},
-  {icon:'📱', title:'Your Subscriptions',      sub:'Step 2 of 4 — recurring autopays'},
-  {icon:'🛒', title:'Variable Budget',         sub:'Step 3 of 4 — spending categories'},
-  {icon:'🔐', title:'Protect Your Budget',     sub:'Step 4 of 4 — create your PIN'},
+  {icon:'💵', title:'Income & Fixed Bills',    sub:'Step 1 of 6 — the non-negotiables'},
+  {icon:'📱', title:'Your Subscriptions',      sub:'Step 2 of 6 — recurring autopays'},
+  {icon:'🛒', title:'Variable Budget',         sub:'Step 3 of 6 — spending categories'},
+  {icon:'💸', title:'Your Spending Style',     sub:'Step 4 of 6 — how you move money'},
+  {icon:'🏦', title:'Name Your Accounts',      sub:'Step 5 of 6 — optional but personal'},
+  {icon:'🔐', title:'Protect Your Budget',     sub:'Step 6 of 6 — create your PIN'},
 ];
 const OB_PRESET_SUBS = [
   {emoji:'🧠', name:'BetterHelp',      amount:65,    on:false},
@@ -1028,7 +1216,7 @@ function obRender(){
   document.getElementById('ob-hero-sub').textContent = h.sub;
   // Progress pips (skip step 0 = welcome)
   const pipWrap = document.getElementById('ob-progress');
-  pipWrap.innerHTML = obStep===0 ? '' : [0,1,2,3].map(i=>{
+  pipWrap.innerHTML = obStep===0 ? '' : [0,1,2,3,4,5].map(i=>{
     const cls = i < obStep-1 ? 'done' : i===obStep-1 ? 'active' : '';
     return '<div class="onboard-pip '+cls+'"></div>';
   }).join('');
@@ -1044,7 +1232,9 @@ function obRender(){
   // Step-specific renders
   if(obStep===2) obRenderSubs();
   if(obStep===3) obRenderVcats();
-  if(obStep===4){ obPin1=''; obPin2=''; obPinPhase=1; obPinDots(); document.getElementById('ob-pin-confirm-wrap').classList.add('hidden'); document.getElementById('ob-next').style.display='none'; }
+  if(obStep===4) obRenderSpendingStyle();
+  if(obStep===5) obRenderAccountFields();
+  if(obStep===6){ obPin1=''; obPin2=''; obPinPhase=1; obPinDots(); document.getElementById('ob-pin-confirm-wrap').classList.add('hidden'); document.getElementById('ob-next').style.display='none'; }
   else document.getElementById('ob-next').style.display='';
 }
 
@@ -1057,10 +1247,51 @@ function obNext(){
     if(!income||income<=0){ alert('Please enter your paycheck amount.'); return; }
     if(!anchor){ alert('Please pick your next payday.'); return; }
   }
+  if(obStep===4){
+    // Save spending style selection into obStyleChoice (read at finishOnboarding)
+    // already stored in obStyleChoice by obSelectStyle()
+  }
   if(obStep < OB_STEPS-1){ obStep++; obRender(); window.scrollTo(0,0); }
 }
 function obBack(){
   if(obStep>0){ obStep--; obRender(); window.scrollTo(0,0); }
+}
+
+// ── Spending Style step ────────────────────────────────────────
+let obStyleChoice = 'envelope';
+let obSubsItemized = false;
+
+function obRenderSpendingStyle(){
+  const styles = ['envelope','lumpsum','manual'];
+  styles.forEach(s => {
+    const row = document.getElementById('obs-'+s);
+    const check = document.getElementById('obs-'+s+'-check');
+    if(row) row.style.border = s===obStyleChoice ? '2px solid var(--accent,#2A9D8F)' : '2px solid var(--border)';
+    if(check){ check.style.background = s===obStyleChoice ? 'var(--accent,#2A9D8F)' : 'transparent'; check.style.borderColor = s===obStyleChoice ? 'var(--accent,#2A9D8F)' : 'var(--border)'; }
+  });
+  const toggle = document.getElementById('obs-subs-toggle');
+  const knob   = document.getElementById('obs-subs-knob');
+  if(toggle){ toggle.style.background = obSubsItemized ? 'var(--accent,#2A9D8F)' : '#ccc'; }
+  if(knob){ knob.style.left = obSubsItemized ? '21px' : '3px'; }
+}
+function obSelectStyle(s){ obStyleChoice=s; obRenderSpendingStyle(); }
+function obToggleSubsItemized(){ obSubsItemized=!obSubsItemized; obRenderSpendingStyle(); }
+
+let obAccountNames = {};
+function obRenderAccountFields(){
+  const el = document.getElementById('ob-account-fields');
+  if(!el) return;
+  const style = obStyleChoice||'envelope';
+  const fields = ACCOUNT_FIELDS.filter(f => !(f.key==='spending' && style==='manual'));
+  el.innerHTML = fields.map(f =>
+    `<div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">${f.label}</div>
+      <input class="vcat-add-input" style="width:100%;box-sizing:border-box"
+        placeholder="${f.placeholder}"
+        value="${(obAccountNames[f.key]||'').replace(/"/g,'&quot;')}"
+        oninput="obAccountNames['${f.key}']=this.value.trim()"/>
+    </div>`
+  ).join('');
 }
 
 // ── Subscriptions step ─────────────────────────────────────────
@@ -1235,6 +1466,9 @@ function obSaveAndLaunch(){
     weekly: totalVar/2,
     anchorDate: anchorVal,
     userPin: obPin1,
+    spendingStyle: obStyleChoice||'envelope',
+    subsItemized: obSubsItemized||false,
+    accountNames: Object.assign({...DEFAULTS.accountNames}, Object.fromEntries(Object.entries(obAccountNames).filter(([,v])=>v))),
     bonuses:{}, goals:[], checks:{}, deposits:[]
   };
   save();
@@ -1274,7 +1508,7 @@ function renderAppSettingsUI(){
     if(el) el.style.border = t===theme ? '2px solid var(--accent,#2A9D8F)' : '2px solid var(--border)';
   });
   // Font checks
-  ['clean','monoline','traditional'].forEach(f=>{
+  ['clean','monospace','traditional'].forEach(f=>{
     const el = document.getElementById('font-'+f);
     const check = document.getElementById('font-'+f+'-check');
     if(el) el.style.border = f===font ? '2px solid var(--accent,#2A9D8F)' : '2px solid var(--border)';
@@ -1380,6 +1614,10 @@ function selectGoalColor(c){
   renderColorSwatches();
 }
 function closeGoalModal(){document.getElementById('goal-modal').classList.add('hidden');}
+function getFunFundMonthly(){
+  const ff=(S.varCats||[]).find(c=>c.name==='Fun Fund'||c.id===5);
+  return ff ? parseFloat(ff.amount||0) : 0;
+}
 function saveGoal(){
   const name=document.getElementById('g-name').value.trim();
   const emoji=document.getElementById('g-emoji').value.trim()||'🎯';
@@ -1389,6 +1627,27 @@ function saveGoal(){
   if(!name){alert('Please enter a goal name.');return;}
   if(isNaN(amount)||amount<=0){alert('Please enter a valid amount.');return;}
   if(!date){alert('Please choose a target date.');return;}
+  // Check if new goal would exceed Fun Fund
+  const funFundMo = getFunFundMonthly();
+  const deadline = new Date(date+'T23:59:59');
+  const futurePDs = (typeof ALL_PD!=='undefined'?ALL_PD:[]).filter(d=>d>=new Date()&&d<=deadline);
+  const pdsLeft = futurePDs.length||1;
+  const thisPPD = Math.ceil((amount-savedInput)/pdsLeft);
+  // existing goals cost
+  const otherGoalsPPD = (S.goals||[]).filter((_,i)=>i!==editGoalIdx).reduce((s,g)=>s+goalPerPayday(g),0);
+  const totalPPD = thisPPD + otherGoalsPPD;
+  const totalMo = totalPPD*2;
+  const warnEl = document.getElementById('goal-fund-warning');
+  if(totalMo > funFundMo && funFundMo > 0){
+    if(warnEl){
+      warnEl.style.display='block';
+      warnEl.innerHTML=`⚠️ Your goals need <strong>${fmt(totalMo)}/mo</strong> from Fun Fund, but your Fun Fund is only <strong>${fmt(funFundMo)}/mo</strong>. Consider a later target date or increasing your Fun Fund in Budget → Variable.`;
+    }
+    const ovBtn=document.getElementById('goal-warn-override');
+    if(ovBtn) ovBtn.style.display='block';
+    return; // block save until acknowledged
+  }
+  if(warnEl) warnEl.style.display='none';
   if(!S.goals)S.goals=[];
   if(editGoalIdx !== null){
     S.goals[editGoalIdx] = {...S.goals[editGoalIdx], name, emoji, amount, date, color:selectedGoalColor, saved:savedInput};
@@ -1398,6 +1657,21 @@ function saveGoal(){
   save();closeGoalModal();renderAll();
 }
 
+function saveGoalForce(){
+  // Skip Fun Fund check and save directly
+  const name=document.getElementById('g-name').value.trim();
+  const emoji=document.getElementById('g-emoji').value.trim()||'🎯';
+  const amount=parseFloat(document.getElementById('g-amount').value);
+  const savedInput=parseFloat(document.getElementById('g-saved').value)||0;
+  const date=document.getElementById('g-date').value;
+  if(!S.goals)S.goals=[];
+  if(editGoalIdx!==null){
+    S.goals[editGoalIdx]={...S.goals[editGoalIdx],name,emoji,amount,date,color:selectedGoalColor,saved:savedInput};
+  } else {
+    S.goals.push({id:Date.now(),name,emoji,amount,date,saved:savedInput,color:selectedGoalColor});
+  }
+  save();closeGoalModal();renderAll();
+}
 // ── Card toggles ───────────────────────────────────────────────
 function toggleCard(id){
   document.getElementById(`${id}-body`).classList.toggle('open');
@@ -1532,6 +1806,7 @@ function saveSplit(k, idx) {
 }
 
 function addBonus(){
+  const lbl=document.getElementById('bonus-lbl-in').value.trim()||'Bonus';
   const amt=parseFloat(document.getElementById('bonus-amt-in').value);
   if(isNaN(amt)||amt<=0){alert('Enter a valid amount.');return;}
   const k=bKey(curYear,curMonth);
@@ -1561,6 +1836,68 @@ function renderTodayBanner(){
     `<span style="font-size:20px">📅</span><div><div style="font-size:13px;font-weight:700">${dateStr}</div>${msg?`<div style="font-size:12px;color:#5D4037;margin-top:1px">${msg}</div>`:''}${goalMsg}</div>`;
 }
 
+
+
+// ── Spending style helpers ─────────────────────────────────────
+function acct(key){ return (S.accountNames&&S.accountNames[key]) || ({inbox:'Checking Inbox',fixed:'Fixed Expenses',weekly:'Weekly Needs',spending:'Daily Wallet',savings:'Savings'}[key]||key); }
+
+function spendLabel(){
+  const style = S.spendingStyle||'envelope';
+  if(style==='envelope') return {transfer:acct('weekly')+' → '+acct('spending'), payday:acct('weekly')+' → '+acct('spending'), desc:'Weekly transfer to '+acct('spending')};
+  if(style==='lumpsum')  return {transfer:'Variable Budget → '+acct('spending'),   payday:'Variable Budget → '+acct('spending'), desc:'Transfer full variable budget on payday'};
+  return                        {transfer:'Variable Budget (spending guide)', payday:'Variable Budget', desc:'Track spending — no transfer needed'};
+}
+
+function buildVariableRow(weeklyNeeds, pdGoalTotal, style){
+  const lbl = spendLabel();
+  if(style==='lumpsum'){
+    // On payday, transfer full half-variable amount at once
+    const spending = weeklyNeeds - pdGoalTotal;
+    return pdGoalTotal > 0
+      ? lbl.payday + ' ('+fmt(spending)+' after '+fmt(pdGoalTotal)+' to goals)'
+      : lbl.payday;
+  }
+  // envelope or manual
+  return pdGoalTotal > 0
+    ? lbl.payday + ' ('+fmt(weeklyNeeds - pdGoalTotal)+' spending + '+fmt(pdGoalTotal)+' goals)'
+    : lbl.payday;
+}
+
+function buildSubsRows(){
+  // Returns individual sub rows if subsItemized is on
+  if(!S.subsItemized) return [];
+  return (S.subsCats||[]).map(sub => ({
+    action: '  ↳ ' + (sub.emoji||'📱') + ' ' + sub.name,
+    amount: fmt(parseFloat(sub.amount||0)/2),
+    isSubRow: true
+  }));
+}
+// ── Debt payoff estimates ──────────────────────────────────────
+function debtPayoffEstimate(balance, minPayment, rate){
+  if(!balance||balance<=0) return {paid:true};
+  if(!minPayment||minPayment<=0) return {months:null, label:'No minimum set'};
+  const apr = parseFloat(rate)||0;
+  const monthlyRate = apr/100/12;
+  let bal = balance, months = 0;
+  // min-payment only simulation
+  while(bal > 0.005 && months < 600){
+    const interest = monthlyRate>0 ? bal*monthlyRate : 0;
+    bal = Math.max(0, bal + interest - minPayment);
+    months++;
+    if(minPayment <= interest && monthlyRate>0){ months=9999; break; } // never pays off
+  }
+  if(months>=9999) return {months:null, label:'⚠️ Min payment too low to pay off'};
+  const yrs = Math.floor(months/12), mos = months%12;
+  const label = yrs>0 ? `${yrs}yr ${mos>0?mos+'mo':''}`.trim() : `${months} months`;
+  const payoffDate = new Date();
+  payoffDate.setMonth(payoffDate.getMonth()+months);
+  const dateLabel = payoffDate.toLocaleDateString('en-US',{month:'short',year:'numeric'});
+  return {months, label, dateLabel};
+}
+
+function activeDebts(){
+  return (S.debts||[]).filter(d=>parseFloat(d.balance||0)>0);
+}
 // ── Events ─────────────────────────────────────────────────────
 function getEvents(y,m){
   const ev={};
@@ -1597,13 +1934,40 @@ function getEvents(y,m){
     });
   });
 
+  // Debt due dates (if user set a dueDay on the debt)
+  activeDebts().forEach(d => {
+    if(!d.dueDay) return;
+    const day = Math.min(parseInt(d.dueDay), new Date(y,m+1,0).getDate());
+    const k = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const est = debtPayoffEstimate(d.balance, d.minPayment, d.rate);
+    const note = est.months ? `Payoff in ${est.label} at min payments` : '';
+    if(ev[k]){
+      ev[k].details.push({action:(d.emoji||'💸')+' '+d.name+' payment due', amount:fmt(d.minPayment), isDebt:true});
+    } else {
+      ev[k]={type:'debt_due', label:(d.emoji||'💸')+' '+d.name+' Due', color:'#E76F51',
+        details:[{action:(d.emoji||'💸')+' '+d.name+' minimum payment', amount:fmt(d.minPayment)}],
+        note:note};
+    }
+  });
+
   // Rent
   ev[`${y}-${String(m+1).padStart(2,'0')}-01`]={type:'rent',label:'🏠 Rent Due',color:'#E76F51',details:[],note:`${fmt(S.rent)} due today`};
 
   // Weekly Saturdays
+  const style=S.spendingStyle||'envelope';
+  const sLbl=spendLabel();
   for(let d=1;d<=dim;d++){
     const dt=new Date(y,m,d);
-    if(dt.getDay()===6){const k=dk(dt);if(!ev[k])ev[k]={type:'weekly',label:'📲 Weekly',color:'#2A9D8F',details:[{action:'Weekly Needs → Daily Wallet',amount:fmt(S.weekly)}]};}
+    if(dt.getDay()===6){
+      const k=dk(dt);
+      if(!ev[k]){
+        if(style==='manual'){
+          ev[k]={type:'weekly',label:'📲 Weekly Check-in',color:'#2A9D8F',details:[{action:'Review Variable Budget spending',amount:fmt(S.weekly)}]};
+        } else {
+          ev[k]={type:'weekly',label:'📲 Weekly Transfer',color:'#2A9D8F',details:[{action:sLbl.transfer,amount:fmt(S.weekly)}]};
+        }
+      }
+    }
   }
 
   const rf=rentFunded(y,m);
@@ -1615,12 +1979,13 @@ function getEvents(y,m){
     const pdGoalTotal=pdGoals.reduce((s,g)=>s+goalPerPayday(g),0);
     const weeklyNeeds=S.variable/2;
 
-    // Goal rows shown as sub-transfers FROM Weekly Needs → Savings
-    // Snapshot the per-payday amount NOW so checkbox math stays stable
+    // Goal rows shown as sub-transfers FROM spending bucket → Savings
+    const _goalStyle=S.spendingStyle||'envelope';
+    const _goalSrc=_goalStyle==='envelope'?acct('weekly'):_goalStyle==='lumpsum'?'Variable Budget':'Budget';
     const goalRows=pdGoals.map(g=>{
       const fixedAmt=goalPerPayday(g);
       return {
-        action:'  \u21b3 '+g.emoji+' '+g.name+': Weekly Needs \u2192 Savings',
+        action:'  \u21b3 '+g.emoji+' '+g.name+': '+_goalSrc+' \u2192 Savings',
         amount:fmt(fixedAmt),
         goalAmt:fixedAmt,
         goalColor:g.color,
@@ -1628,64 +1993,81 @@ function getEvents(y,m){
       };
     });
 
-    // Weekly Needs label shows split breakdown when goals exist
-    const weeklyLabel=pdGoalTotal>0
-      ? 'Weekly Needs ('+fmt(weeklyNeeds-pdGoalTotal)+' for spending after '+fmt(pdGoalTotal)+' goal portion)'
-      : 'Weekly Needs \u2192 Daily Wallet';
+    // Debt sub-rows — each active debt contributes min/2 per payday
+    const debtRows = activeDebts().map(d => ({
+      action: '  ↳ ' + (d.emoji||'💸') + ' ' + d.name + ': ' + acct('fixed') + ' → Payment',
+      amount: fmt(parseFloat(d.minPayment||0)/2),
+      debtId: d.id,
+      isDebt: true
+    }));
+    const debtPerPD = activeDebts().reduce((s,d)=>s+parseFloat(d.minPayment||0)/2, 0);
+
+    // Variable/Weekly label and sub rows based on spending style
+    const _style=S.spendingStyle||'envelope';
+    const weeklyLabel=buildVariableRow(weeklyNeeds, pdGoalTotal, _style);
+    const subsRows=buildSubsRows();
 
     if(last){
-      const p1f=S.rent+S.subs/2+S.ccmin/2;
+      const p1f=S.rent+S.subs/2+S.ccmin/2+debtPerPD;
       const cc=S.income-p1f-weeklyNeeds;
       ev[k]={type:'payday_last',label:'💰 Payday #'+num+' 🌟',color:'#6C5CE7',
         note:"Last payday of month — pre-fund next month's rent immediately!",
         details:[
-          {action:'Fixed Expenses (next rent + ½ subs + ½ CC min)',amount:fmt(p1f)},
+          {action:acct('fixed')+' (next rent + ½ subs + ½ CC min'+(debtPerPD>0?' + debts':'')+' )',amount:fmt(p1f)},
+          ...subsRows,
+          ...debtRows,
           {action:weeklyLabel,amount:fmt(weeklyNeeds)},
           ...goalRows,
           {action:'Credit Card (extra)',amount:fmt(cc)},
-          {action:'Checking Inbox remaining',amount:'$0.00'},
+          {action:acct('inbox')+' remaining',amount:'$0.00'},
           {action:"⚠️ PAY NEXT MONTH'S RENT NOW",amount:fmt(S.rent),urgent:true},
           ...bRows
         ]};
     } else if(first&&rf){
-      const fixNR=S.subs/2+S.ccmin/2;
+      const fixNR=S.subs/2+S.ccmin/2+debtPerPD;
       const cc=S.income-fixNR-weeklyNeeds;
       ev[k]={type:'payday_bonus',label:'💰 Payday #'+num+' 🟢',color:'#27AE60',
         note:'Rent pre-funded — extra '+fmt(S.rent)+' goes to CC!',
         details:[
-          {action:'Fixed Expenses (½ subs + ½ CC min — NO RENT!)',amount:fmt(fixNR)},
+          {action:acct('fixed')+' (½ subs + ½ CC min — NO RENT!'+(debtPerPD>0?' + debts':'')+' )',amount:fmt(fixNR)},
+          ...subsRows,
+          ...debtRows,
           {action:weeklyLabel,amount:fmt(weeklyNeeds)},
           ...goalRows,
           {action:'Credit Card (extra + freed '+fmt(S.rent)+' rent)',amount:fmt(cc),hi:true},
-          {action:'Checking Inbox remaining',amount:'$0.00'},
+          {action:acct('inbox')+' remaining',amount:'$0.00'},
           ...bRows
         ]};
     } else if(first){
-      const p1f=S.rent+S.subs/2+S.ccmin/2;
+      const p1f=S.rent+S.subs/2+S.ccmin/2+debtPerPD;
       const cc=S.income-p1f-weeklyNeeds;
       ev[k]={type:'payday',label:'💰 Payday #'+num,color:'#1F2D3D',
         note:'Pay rent immediately after transferring to Fixed Expenses.',
         details:[
-          {action:'Fixed Expenses (rent + ½ subs + ½ CC min)',amount:fmt(p1f)},
+          {action:acct('fixed')+' (rent + ½ subs + ½ CC min'+(debtPerPD>0?' + debts':'')+' )',amount:fmt(p1f)},
+          ...subsRows,
+          ...debtRows,
           {action:weeklyLabel,amount:fmt(weeklyNeeds)},
           ...goalRows,
           {action:'Credit Card (extra)',amount:fmt(cc)},
-          {action:'Checking Inbox remaining',amount:'$0.00'},
-          {action:'⚠️ Pay rent from Fixed Expenses',amount:fmt(S.rent),urgent:true},
+          {action:acct('inbox')+' remaining',amount:'$0.00'},
+          {action:'⚠️ Pay rent from '+acct('fixed'),amount:fmt(S.rent),urgent:true},
           ...bRows
         ]};
     } else {
-      const p2f=S.subs/2+S.ccmin/2;
-      const p1cc=S.income-(S.rent+S.subs/2+S.ccmin/2)-weeklyNeeds;
+      const p2f=S.subs/2+S.ccmin/2+debtPerPD;
+      const p1cc=S.income-(S.rent+S.subs/2+S.ccmin/2+debtPerPD)-weeklyNeeds;
       const extra=S.income-p2f-weeklyNeeds-p1cc;
       ev[k]={type:'payday',label:'💰 Payday #'+num,color:'#1F2D3D',
         details:[
-          {action:'Fixed Expenses (½ subs + ½ CC min)',amount:fmt(p2f)},
+          {action:acct('fixed')+' (½ subs + ½ CC min'+(debtPerPD>0?' + debts':'')+' )',amount:fmt(p2f)},
+          ...subsRows,
+          ...debtRows,
           {action:weeklyLabel,amount:fmt(weeklyNeeds)},
           ...goalRows,
           {action:'Credit Card (extra)',amount:fmt(p1cc)},
           ...(extra>0?[{action:'🎉 Bonus CC Payment',amount:fmt(extra),hi:true}]:[]),
-          {action:'Checking Inbox remaining',amount:'$0.00'},
+          {action:acct('inbox')+' remaining',amount:'$0.00'},
           ...bRows
         ]};
     }
@@ -1757,7 +2139,6 @@ function renderCalendar(){
     cell.appendChild(num);
 
     if(e){
-      const dot=document.createElement('div');dot.className='day-dot';dot.style.background=e.color;cell.appendChild(dot);
       const lbl=document.createElement('div');lbl.className='day-lbl';lbl.style.color=e.color;lbl.textContent=e.label;cell.appendChild(lbl);
     }
 
@@ -1831,18 +2212,11 @@ function toggleCheck(dateKey, rowIdx, isGoal, goalColor, goalAmt){
   if(!S.checks[dateKey])S.checks[dateKey]={};
   const existing = S.checks[dateKey][rowIdx];
   const wasChecked = existing && existing.checked;
-  // Store the snapshotted amount alongside checked state
-  const storedAmt = (existing && existing.amt) ? existing.amt : goalAmt;
+  // Snapshot amount on first check — never changes
+  const storedAmt = (existing && existing.amt!=null) ? existing.amt : goalAmt;
   S.checks[dateKey][rowIdx] = { checked: !wasChecked, amt: storedAmt };
-
-  if(isGoal && storedAmt > 0){
-    const goal = (S.goals||[]).find(g=>g.color===goalColor);
-    if(goal){
-      const cur = parseFloat(goal.saved||0);
-      // Use the stored amount (never changes after first check)
-      goal.saved = Math.max(0, wasChecked ? cur - storedAmt : cur + storedAmt);
-    }
-  }
+  // NOTE: We do NOT mutate goal.saved here. Amounts are display-only / tracking only.
+  // Goal progress is updated only via the + Save button on the Goals tab.
   save();
   const ev = getEvents(curYear, curMonth);
   renderPanel(ev);
@@ -1866,9 +2240,9 @@ function renderPanel(ev){
       const noCheck = !r.amount || r.amount==='$0.00' || r.urgent;
       const checked = !noCheck && !!(checks[ri] && checks[ri].checked);
       const rowDone = checked ? ' p-row-done' : '';
-      const cls=r.urgent?'urgent':r.hi?'hi':r.bon?'bon':r.goal?'goal-row':'';
-      const lc=r.urgent?'urgent':r.hi?'hi':r.bon?'bon':r.goal?'goal':'';
-      const ac=r.urgent?'#E76F51':r.hi?'#27AE60':r.bon?(r.bonColor||'#B8860B'):r.goal?(r.goalColor||'#6C5CE7'):e.color;
+      const cls=r.urgent?'urgent':r.hi?'hi':r.bon?'bon':r.goal?'goal-row':r.isDebt?'debt-row':'';
+      const lc=r.urgent?'urgent':r.hi?'hi':r.bon?'bon':r.goal?'goal':r.isDebt?'urgent':'';
+      const ac=r.urgent?'#E76F51':r.hi?'#27AE60':r.bon?(r.bonColor||'#B8860B'):r.goal?(r.goalColor||'#6C5CE7'):r.isDebt?'#E76F51':e.color;
       const isGoal = !!r.goal;
       const goalColor = r.goalColor||'';
       const checkHtml = noCheck
@@ -2483,6 +2857,176 @@ function addCustomCat(){
   syncVariable(); save(); renderVcatSection(); renderSettings();
 }
 
+// ── Debts Manager ──────────────────────────────────────────────
+let debtEditId = null;
+const DEBT_TYPES = ['Credit Card','Student Loan','Car Loan','Personal Loan','Medical','Other'];
+
+function renderDebtsMgr(){
+  const el = document.getElementById('debts-mgr-content');
+  if(!el) return;
+  const list = S.debts||[];
+  const sub = document.getElementById('debts-mgr-sub');
+  const totalMin = list.reduce((s,d)=>s+parseFloat(d.minPayment||0),0);
+  const totalBal = list.reduce((s,d)=>s+parseFloat(d.balance||0),0);
+  if(sub) sub.textContent = list.length
+    ? `${list.length} debt${list.length!==1?'s':''} · ${fmt(totalBal)} total · ${fmt(totalMin)}/mo minimums`
+    : 'Car loans, student loans, personal loans…';
+
+  let html = '<div style="padding:12px 14px">';
+  list.forEach(d => {
+    if(debtEditId===d.id){
+      html += `<div style="background:var(--bg3);border-radius:12px;padding:12px;margin-bottom:10px">
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <input class="vcat-add-input" id="de-emoji" value="${d.emoji||'💸'}" maxlength="2" style="max-width:46px;text-align:center"/>
+          <input class="vcat-add-input" id="de-name" value="${d.name}" placeholder="Loan name" style="flex:1;min-width:0"/>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <input class="vcat-add-input" id="de-balance" type="number" value="${d.balance}" placeholder="Balance $" inputmode="decimal" style="flex:1"/>
+          <input class="vcat-add-input" id="de-min" type="number" value="${d.minPayment}" placeholder="Min/mo $" inputmode="decimal" style="flex:1"/>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <input class="vcat-add-input" id="de-rate" type="number" value="${d.rate||0}" placeholder="APR %" inputmode="decimal" style="flex:1"/>
+          <input class="vcat-add-input" id="de-dueday" type="number" value="${d.dueDay||''}" placeholder="Due day (1-28)" min="1" max="28" inputmode="numeric" style="flex:1"/>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <select class="vcat-add-input" id="de-type" style="flex:1;padding:9px 8px">${DEBT_TYPES.map(t=>`<option value="${t}"${d.type===t?' selected':''}>${t}</option>`).join('')}</select>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="saveDebtEdit(${d.id})" style="flex:1;background:#6C5CE7;color:white;border:none;border-radius:10px;padding:10px;font-size:14px;font-weight:700;cursor:pointer">Save</button>
+          <button onclick="cancelDebtEdit()" style="background:var(--bg);color:var(--text2);border:none;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;cursor:pointer">Cancel</button>
+        </div></div>`;
+    } else {
+      html += `<div class="income-card">
+        <div class="income-card-top"><span class="income-name">${d.emoji||'💸'} ${d.name}</span><span style="font-size:15px;font-weight:800;color:#E76F51">${fmt(d.balance)}</span></div>
+        <div class="income-meta">${d.type||''}${d.rate>0?' · '+d.rate+'% APR':''} · ${fmt(d.minPayment)}/mo min · ${fmt(d.minPayment/2)}/payday</div>
+        ${(()=>{ const est=debtPayoffEstimate(d.balance,d.minPayment,d.rate);
+          if(est.paid) return '<div style="font-size:12px;color:#27AE60;margin-top:4px;font-weight:700">✅ Paid off!</div>';
+          if(!est.months) return '<div style="font-size:12px;color:#E76F51;margin-top:4px">'+est.label+'</div>';
+          return '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border-radius:8px;font-size:12px;line-height:1.6">'
+            +'<div style="color:var(--muted);font-weight:600">📅 At minimum payments only:</div>'
+            +'<div style="color:var(--text);font-weight:700">Paid off in '+est.label+' ('+est.dateLabel+')</div>'
+            +'</div>';
+        })()}
+        <div class="income-actions">
+          <button class="vcat-edit-btn" onclick="openDebtEdit(${d.id})">✏️ Edit</button>
+          <button class="goal-del" onclick="deleteDebt(${d.id})">✕ Remove</button>
+        </div></div>`;
+    }
+  });
+
+  html += `<div style="font-size:12px;font-weight:700;color:var(--muted);margin:${list.length?'14px':'4px'} 0 8px;text-transform:uppercase;letter-spacing:0.4px">${list.length?'Add Another Debt':'Add a Debt'}</div>`;
+  html += `<div style="background:var(--bg3);border-radius:12px;padding:12px">
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input class="vcat-add-input" id="nd-emoji" maxlength="2" placeholder="💸" style="max-width:46px;text-align:center;flex-shrink:0"/>
+      <input class="vcat-add-input" id="nd-name" placeholder="Loan name" style="flex:1;min-width:0"/>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input class="vcat-add-input" id="nd-balance" type="number" placeholder="Balance $" inputmode="decimal" style="flex:1"/>
+      <input class="vcat-add-input" id="nd-min" type="number" placeholder="Min/mo $" inputmode="decimal" style="flex:1"/>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input class="vcat-add-input" id="nd-rate" type="number" placeholder="APR %" inputmode="decimal" style="flex:1"/>
+      <input class="vcat-add-input" id="nd-dueday" type="number" placeholder="Due day (optional)" min="1" max="28" inputmode="numeric" style="flex:1"/>
+    </div>
+    <div style="margin-bottom:10px">
+      <select class="vcat-add-input" id="nd-type" style="width:100%;padding:9px 8px">${DEBT_TYPES.map(t=>`<option>${t}</option>`).join('')}</select>
+    </div>
+    <button onclick="addNewDebt()" style="width:100%;background:#E76F51;color:white;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer">+ Add Debt</button>
+  </div></div>`;
+  el.innerHTML = html;
+}
+function openDebtEdit(id){ debtEditId=id; renderDebtsMgr(); }
+function cancelDebtEdit(){ debtEditId=null; renderDebtsMgr(); }
+function saveDebtEdit(id){
+  const d=(S.debts||[]).find(x=>x.id===id); if(!d)return;
+  d.emoji=document.getElementById('de-emoji').value.trim()||'💸';
+  d.name=document.getElementById('de-name').value.trim();
+  d.balance=parseFloat(document.getElementById('de-balance').value)||0;
+  d.minPayment=parseFloat(document.getElementById('de-min').value)||0;
+  d.rate=parseFloat(document.getElementById('de-rate').value)||0;
+  d.dueDay=document.getElementById('de-dueday').value||'';
+  d.type=document.getElementById('de-type').value;
+  debtEditId=null; save(); renderDebtsMgr(); renderSettings(); renderAll();
+}
+function deleteDebt(id){ S.debts=(S.debts||[]).filter(x=>x.id!==id); save(); renderDebtsMgr(); renderSettings(); }
+function addNewDebt(){
+  const emoji=document.getElementById('nd-emoji').value.trim()||'💸';
+  const name=document.getElementById('nd-name').value.trim();
+  const balance=parseFloat(document.getElementById('nd-balance').value)||0;
+  const minPayment=parseFloat(document.getElementById('nd-min').value)||0;
+  const rate=parseFloat(document.getElementById('nd-rate').value)||0;
+  const type=document.getElementById('nd-type').value;
+  if(!name){alert('Please enter a name for this debt.');return;}
+  if(!S.debts)S.debts=[];
+  const dueDay=document.getElementById('nd-dueday').value||'';
+  S.debts.push({id:Date.now(),emoji,name,balance,originalBalance:balance,minPayment,rate,type,dueDay});
+  save(); renderDebtsMgr(); renderSettings(); renderAll();
+}
+
+// ── Account Names ──────────────────────────────────────────────
+const ACCOUNT_FIELDS = [
+  { key:'inbox',   label:'📥 Paycheck lands in',  placeholder:'e.g. Checking Inbox, Main Account' },
+  { key:'fixed',   label:'🔒 Fixed expenses held in', placeholder:'e.g. Fixed Expenses, Bills Account' },
+  { key:'weekly',  label:'📲 Spending pool',       placeholder:'e.g. Weekly Needs, Variable Budget' },
+  { key:'spending',label:'💳 Everyday spend account', placeholder:'e.g. Daily Wallet, Debit Card' },
+  { key:'savings', label:'🏦 Savings destination', placeholder:'e.g. Savings, HYSA, Ally' },
+];
+
+function renderAccountNames(){
+  const el = document.getElementById('account-names-form');
+  if(!el) return;
+  const names = S.accountNames||{};
+  const style = S.spendingStyle||'envelope';
+  // Hide spending account field if manual (no transfer)
+  const fields = ACCOUNT_FIELDS.filter(f => !(f.key==='spending' && style==='manual'));
+  el.innerHTML = fields.map(f =>
+    `<div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">${f.label}</div>
+      <input class="vcat-add-input" style="width:100%;box-sizing:border-box" 
+        placeholder="${f.placeholder}"
+        value="${(names[f.key]||'').replace(/"/g,'&quot;')}"
+        onchange="saveAccountName('${f.key}',this.value)"
+        oninput="saveAccountName('${f.key}',this.value)"/>
+    </div>`
+  ).join('');
+}
+
+function saveAccountName(key, val){
+  if(!S.accountNames) S.accountNames = {...DEFAULTS.accountNames};
+  S.accountNames[key] = val.trim() || DEFAULTS.accountNames[key];
+  save();
+  renderAll(); // live-update calendar/checklist
+}
+
+function setSpendingStyle(s){ S.spendingStyle=s; save(); renderSpendingStyleUI(); renderAccountNames(); renderAll(); }
+function toggleSubsItemized(){ S.subsItemized=!S.subsItemized; save(); renderSpendingStyleUI(); renderAll(); }
+function renderSpendingStyleUI(){
+  const style=S.spendingStyle||'envelope';
+  ['envelope','lumpsum','manual'].forEach(s=>{
+    const row=document.getElementById('ss-'+s);
+    const check=document.getElementById('ss-'+s+'-check');
+    if(row) row.style.border=s===style?'2px solid var(--accent,#2A9D8F)':'2px solid var(--border)';
+    if(check){ check.style.background=s===style?'var(--accent,#2A9D8F)':'transparent'; check.style.borderColor=s===style?'var(--accent,#2A9D8F)':'var(--border)'; }
+  });
+  const on=!!S.subsItemized;
+  const t=document.getElementById('ss-subs-toggle');
+  const k=document.getElementById('ss-subs-knob');
+  if(t) t.style.background=on?'var(--accent,#2A9D8F)':'#ccc';
+  if(k) k.style.left=on?'21px':'3px';
+}
+
+// ── Budget Mode ────────────────────────────────────────────────
+function setBudgetMode(mode){ S.budgetMode=mode; save(); renderBudgetModeUI(); renderSettings(); }
+function renderBudgetModeUI(){
+  const mode=S.budgetMode||'debt';
+  ['debt','save','balanced'].forEach(m=>{
+    const row=document.getElementById('bm-'+m);
+    const check=document.getElementById('bm-'+m+'-check');
+    if(row) row.style.border=m===mode?'2px solid var(--accent,#2A9D8F)':'2px solid var(--border)';
+    if(check){ check.style.background=m===mode?'var(--accent,#2A9D8F)':'transparent'; check.style.borderColor=m===mode?'var(--accent,#2A9D8F)':'var(--border)'; }
+  });
+}
+
 // ── Settings ───────────────────────────────────────────────────
 function renderSettings(){
   document.getElementById('sv-income').textContent=fmt(S.income);
@@ -2494,19 +3038,27 @@ function renderSettings(){
   renderSubsSection();
   renderFixedSection();
   renderVcatSection();
+  renderDebtsMgr();
+  renderBudgetModeUI();
+  renderSpendingStyleUI();
+  renderAccountNames();
   const goalPD=totalGoalPerPayday();
   const fixed=S.rent+S.subs+S.ccmin;
-  const ccPay=(S.income*2)-fixed-S.variable;
+  const debtMins=(S.debts||[]).reduce((s,d)=>s+parseFloat(d.minPayment||0),0);
+  const leftover=(S.income*2)-fixed-S.variable-debtMins;
+  const mode=S.budgetMode||'debt';
+  const modeLabel = mode==='debt'?'Available for CC Payoff':mode==='save'?'Available to Save/Invest':'Available (Split: Debt + Savings)';
+  const modeColor = mode==='debt'?'#2A9D8F':mode==='save'?'#27AE60':'#6C5CE7';
   const list=document.getElementById('budget-summary-list');
   const rows=[
     {label:'Primary Income (2 paychecks)',val:fmt(S.income*2),color:'#27AE60'},
     ...((S.extraIncomes||[]).filter(i=>i.amount>0).map(i=>({label:(i.emoji||'💵')+' '+i.name+' (est./mo)',val:'+'+fmt(i.amount),color:'#27AE60'}))),
     {label:'Fixed Expenses',val:`−${fmt(fixed)}`,color:'#E76F51'},
-    {label:'Variable Budget',val:`−${fmt(S.variable)}`,color:'#E76F51'},
-    ...(goalPD>0?[{label:`Savings Goals (${fmt(goalPD*2)}/mo from Fun Fund)`,val:`−${fmt(goalPD*2)}`,color:'#6C5CE7'}]:[]),
-    {label:'Available for CC Payoff',val:fmt(ccPay),color:'#2A9D8F',bold:true},
+    {label:'Variable Budget',val:`−${fmt(S.variable)}`,color:'#E76F51',sub:goalPD>0?`Includes ${fmt(goalPD*2)}/mo set aside for savings goals`:null},
+    ...(debtMins>0?[{label:'Other Debt Minimums',val:`−${fmt(debtMins)}`,color:'#E76F51'}]:[]),
+    {label:modeLabel,val:fmt(leftover),color:modeColor,bold:true},
   ];
-  list.innerHTML=rows.map(r=>`<div class="s-item"><div class="s-item-lbl" style="${r.bold?'font-weight:700':''}">${r.label}</div><span style="color:${r.color};font-weight:${r.bold?'800':'600'};font-size:14px">${r.val}</span></div>`).join('');
+  list.innerHTML=rows.map(r=>`<div class="s-item"><div><div class="s-item-lbl" style="${r.bold?'font-weight:700':''}">${r.label}</div>${r.sub?`<div class="s-item-sub" style="color:#6C5CE7">${r.sub}</div>`:''}</div><span style="color:${r.color};font-weight:${r.bold?'800':'600'};font-size:14px">${r.val}</span></div>`).join('');
 }
 
 // ── Master render ──────────────────────────────────────────────
