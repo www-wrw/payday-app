@@ -380,10 +380,12 @@
   .preset-grid { display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px; }
   .preset-chip { padding:6px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);transition:all 0.15s;white-space:nowrap; }
   .preset-chip:active { background:#F0EBFF;border-color:#6C5CE7;color:#6C5CE7; }
-  .vcat-add-row { display:flex;gap:6px;margin-top:6px;align-items:center; }
-  .vcat-add-input { flex:1;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-size:14px;font-weight:600;color:var(--text);outline:none;font-family:inherit;background:var(--bg3); }
+  .vcat-add-row { display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center; }
+  .vcat-add-row button { flex-shrink:0;white-space:nowrap; }
+  .vcat-add-input { flex:1;min-width:0;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-size:14px;font-weight:600;color:var(--text);outline:none;font-family:inherit;background:var(--bg3); }
   .vcat-add-input:focus { border-color:#6C5CE7;background:var(--surface); }
-  .vcat-add-input.amt { max-width:80px;text-align:right; }
+  .vcat-add-input.amt { width:72px;max-width:72px;flex:0 0 72px;text-align:right; }
+  .vcat-add-input.emoji-in { width:44px;max-width:44px;flex:0 0 44px;text-align:center;padding:9px 4px; }
   .add-money-panel { background:var(--bg3);border-radius:12px;padding:14px;margin-top:10px;border:1px solid var(--border); }
   .add-money-title { font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px; }
   .add-money-source { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px; }
@@ -460,7 +462,7 @@
       <div id="ob-subs-list"></div>
       <div style="margin-top:12px;font-size:12px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">Add your own</div>
       <div class="vcat-add-row">
-        <input class="vcat-add-input" id="ob-sc-emoji" maxlength="2" placeholder="📺" style="max-width:46px;text-align:center"/>
+        <input class="vcat-add-input emoji-in" id="ob-sc-emoji" maxlength="2" placeholder="📺" />
         <input class="vcat-add-input" id="ob-sc-name" placeholder="Netflix, Spotify…" style="flex:1"/>
         <input class="vcat-add-input amt" id="ob-sc-amt" type="number" placeholder="$0" inputmode="decimal"/>
         <button onclick="obAddSub()" style="background:#6C5CE7;color:white;border:none;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:700;cursor:pointer">+ Add</button>
@@ -474,7 +476,7 @@
       <div id="ob-vcat-list"></div>
       <div style="margin-top:12px;font-size:12px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">Add a category</div>
       <div class="vcat-add-row">
-        <input class="vcat-add-input" id="ob-vc-emoji" maxlength="2" placeholder="😀" style="max-width:46px;text-align:center"/>
+        <input class="vcat-add-input emoji-in" id="ob-vc-emoji" maxlength="2" placeholder="😀" />
         <input class="vcat-add-input" id="ob-vc-name" placeholder="Category name" style="flex:1"/>
         <input class="vcat-add-input amt" id="ob-vc-amt" type="number" placeholder="$0" inputmode="decimal"/>
         <button onclick="obAddVcat()" style="background:#6C5CE7;color:white;border:none;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:700;cursor:pointer">+ Add</button>
@@ -536,7 +538,7 @@
     </div>
 
     <!-- Step 6: PIN -->
-    <div class="onboard-step" id="ob-step-4">
+    <div class="onboard-step" id="ob-step-6">
       <div class="onboard-step-title">🔐 Create Your PIN</div>
       <div class="onboard-step-sub">Choose a 4-digit PIN to protect your budget. You'll enter this every time you open the app.</div>
       <div class="ob-pin-dots">
@@ -1184,9 +1186,14 @@ const OB_PRESET_VCATS = [
 ];
 
 let obStep = 0;
+let obCustomSubs = [];
+let obCustomVcats = [];
+let obStyleChoice = 'envelope';
+let obSubsItemized = false;
+let obAccountNames = {};
+let obPin1 = '', obPin2 = '', obPinPhase = 1;
 let obSubsState = OB_PRESET_SUBS.map(s=>({...s}));
 let obVcatState = OB_PRESET_VCATS.map(c=>({...c}));
-let obPin1 = '', obPin2 = '', obPinPhase = 1;
 
 function isNewUser(){
   try { return !localStorage.getItem('payday_v4'); } catch(e){ return false; }
@@ -1200,6 +1207,11 @@ function startOnboarding(){
   const el = document.getElementById('ob-anchor');
   if(el) el.value = dk(nextSat);
   obStep = 0;
+  obCustomSubs = [];
+  obCustomVcats = [];
+  obStyleChoice = 'envelope';
+  obSubsItemized = false;
+  obAccountNames = {};
   obSubsState = OB_PRESET_SUBS.map(s=>({...s}));
   obVcatState = OB_PRESET_VCATS.map(c=>({...c}));
   obPin1=''; obPin2=''; obPinPhase=1;
@@ -1258,9 +1270,6 @@ function obBack(){
 }
 
 // ── Spending Style step ────────────────────────────────────────
-let obStyleChoice = 'envelope';
-let obSubsItemized = false;
-
 function obRenderSpendingStyle(){
   const styles = ['envelope','lumpsum','manual'];
   styles.forEach(s => {
@@ -1277,7 +1286,13 @@ function obRenderSpendingStyle(){
 function obSelectStyle(s){ obStyleChoice=s; obRenderSpendingStyle(); }
 function obToggleSubsItemized(){ obSubsItemized=!obSubsItemized; obRenderSpendingStyle(); }
 
-let obAccountNames = {};
+const ACCOUNT_FIELDS = [
+  { key:'inbox',   label:'📥 Paycheck lands in',  placeholder:'e.g. Checking Inbox, Main Account' },
+  { key:'fixed',   label:'🔒 Fixed expenses held in', placeholder:'e.g. Fixed Expenses, Bills Account' },
+  { key:'weekly',  label:'📲 Spending pool',       placeholder:'e.g. Weekly Needs, Variable Budget' },
+  { key:'spending',label:'💳 Everyday spend account', placeholder:'e.g. Daily Wallet, Debit Card' },
+  { key:'savings', label:'🏦 Savings destination', placeholder:'e.g. Savings, HYSA, Ally' },
+];
 function obRenderAccountFields(){
   const el = document.getElementById('ob-account-fields');
   if(!el) return;
@@ -1320,7 +1335,6 @@ function obRenderSubs(){
   }
   wrap.innerHTML = html;
 }
-let obCustomSubs = [];
 function obToggleSub(i){ obSubsState[i].on = !obSubsState[i].on; obRenderSubs(); }
 function obSubAmt(i,v){ obSubsState[i].amount = parseFloat(v)||0; }
 function obAddSub(){
@@ -1371,7 +1385,6 @@ function obRenderVcats(){
   }
   wrap.innerHTML = html;
 }
-let obCustomVcats = [];
 function obVcatAmt(i,v){ obVcatState[i].amount = parseFloat(v)||0; }
 function obRemoveVcat(i){ obVcatState[i].on=false; obRenderVcats(); }
 function obEnablePreset(i){ obVcatState[i].on=true; obRenderVcats(); }
@@ -2964,14 +2977,6 @@ function addNewDebt(){
 }
 
 // ── Account Names ──────────────────────────────────────────────
-const ACCOUNT_FIELDS = [
-  { key:'inbox',   label:'📥 Paycheck lands in',  placeholder:'e.g. Checking Inbox, Main Account' },
-  { key:'fixed',   label:'🔒 Fixed expenses held in', placeholder:'e.g. Fixed Expenses, Bills Account' },
-  { key:'weekly',  label:'📲 Spending pool',       placeholder:'e.g. Weekly Needs, Variable Budget' },
-  { key:'spending',label:'💳 Everyday spend account', placeholder:'e.g. Daily Wallet, Debit Card' },
-  { key:'savings', label:'🏦 Savings destination', placeholder:'e.g. Savings, HYSA, Ally' },
-];
-
 function renderAccountNames(){
   const el = document.getElementById('account-names-form');
   if(!el) return;
